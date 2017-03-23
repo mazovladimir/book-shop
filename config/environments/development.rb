@@ -1,4 +1,5 @@
 Rails.application.configure do
+  config.action_cable.allowed_request_origins = [/http:\/\/*/, /https:\/\/*/]
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded on
@@ -51,4 +52,5 @@ Rails.application.configure do
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+  config.action_cable.disable_request_forgery_protection = true
 end
