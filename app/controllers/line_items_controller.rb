@@ -34,6 +34,9 @@ class LineItemsController < ApplicationController
         format.html { redirect_to store_index_url }
         format.js { @current_item = @line_item }
         format.json { render :show, status: :created, location: @line_item }
+
+        @line_items = LineItem.all
+        ActionCable.server.broadcast 'line_items', html: render_to_string('carts/show', layout: false)
       else
         format.html { render :new }
         format.json { render json: @line_item.errors, status: :unprocessable_entity }
@@ -48,6 +51,9 @@ class LineItemsController < ApplicationController
       if @line_item.update(line_item_params)
         format.html { redirect_to @line_item, notice: 'Line item was successfully updated.' }
         format.json { render :show, status: :ok, location: @line_item }
+        
+        @line_items = LineItem.all
+        ActionCable.server.broadcast 'line_items', html: render_to_string('carts/show', layout: false)
       else
         format.html { render :edit }
         format.json { render json: @line_item.errors, status: :unprocessable_entity }
@@ -62,6 +68,9 @@ class LineItemsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to line_items_url, notice: 'Line item was successfully destroyed.' }
       format.json { head :no_content }
+
+      @line_items = LineItem.all
+      ActionCable.server.broadcast 'line_items', html: render_to_string('carts/show', layout: false)
     end
   end
 
